@@ -13,7 +13,7 @@ namespace MetricsManager.Controllers
     [Route("api/metrics/ram")]
     public class RamMetricsController : Controller
     {
-        [HttpGet("agent/available/from/{fromTime}/to/{toTime}")]
+        [HttpGet("available/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsAvailableFrom(DateTime fromTime, DateTime toTime)
         {
             return Ok();

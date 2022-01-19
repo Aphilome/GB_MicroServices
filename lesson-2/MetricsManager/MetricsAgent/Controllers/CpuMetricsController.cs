@@ -14,7 +14,7 @@ namespace MetricsManager.Controllers
     [Route("api/metrics/cpu")]
     public class CpuMetricsController : Controller
     {
-        [HttpGet("agent/from/{fromTime}/to/{toTime}")]
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFrom([FromRoute]DateTime fromTime, [FromRoute]DateTime toTime)
         {
             return Ok();

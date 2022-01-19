@@ -11,7 +11,7 @@ namespace MetricsManager.Controllers
     [Route("api/metrics/dotnet")]
     public class DotNetMetricsController : Controller
     {
-        [HttpGet("agent/from/{fromTime}/to/{toTime}")]
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         
         public IActionResult GetErrorsCountFrom(DateTime fromTime, DateTime toTime)
         {
