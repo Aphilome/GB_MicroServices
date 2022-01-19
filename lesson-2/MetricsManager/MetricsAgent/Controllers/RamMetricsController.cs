@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace MetricsManager.Controllers
+namespace MetricsAgent.Controllers
 {
     //api/metrics/ram/available/from/{fromTime}/to/{toTime}/
     //(размер свободной оперативной памяти в мегабайтах)
@@ -10,7 +10,7 @@ namespace MetricsManager.Controllers
     [Route("api/metrics/ram")]
     public class RamMetricsController : Controller
     {
-        [HttpGet("agent/available/from/{fromTime}/to/{toTime}")]
+        [HttpGet("available/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsAvailableFrom(DateTime fromTime, DateTime toTime)
         {
             return Ok();
