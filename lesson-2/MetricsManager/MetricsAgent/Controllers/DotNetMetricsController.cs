@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MetricsManager.Controllers
+namespace MetricsAgent.Controllers
 {
     //api/metrics/dotnet/errors-count/from/{fromTime}/to/{toTime}
     [ApiController]

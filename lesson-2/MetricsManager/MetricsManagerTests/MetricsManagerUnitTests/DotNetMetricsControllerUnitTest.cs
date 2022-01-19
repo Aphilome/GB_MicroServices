@@ -3,27 +3,27 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 
-namespace MetricsManagerTests
+namespace MetricsManagerTests.MetricsManagerUnitTests
 {
-    public class NetworkMetricsControllerUnitTest
+    public class DotNetMetricsControllerUnitTest
     {
-        private NetworkMetricsController _networkMetricsController;
+        private DotNetMetricsController _dotNetMetricsController;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
-            _networkMetricsController = new NetworkMetricsController();
+            _dotNetMetricsController = new DotNetMetricsController();
         }
 
         [Test]
-        public void GetMetricsFrom_ReturnOk()
+        public void GetErrorsCountFrom_ReturnOk()
         {
             // Arrange
             DateTime fromTime = DateTime.Now;
             DateTime toTime = DateTime.Now.AddDays(1);
 
             // Act
-            var result = _networkMetricsController.GetMetricsFrom(fromTime, toTime);
+            var result = _dotNetMetricsController.GetErrorsCountFrom(fromTime, toTime);
 
             // Assert
             Assert.IsAssignableFrom<OkResult>(result);

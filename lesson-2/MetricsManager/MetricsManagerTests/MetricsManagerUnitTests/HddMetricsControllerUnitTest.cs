@@ -3,27 +3,27 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 
-namespace MetricsManagerTests
+namespace MetricsManagerTests.MetricsManagerUnitTests
 {
-    public class CpuMetricsControllerUnitTests
+    public class HddMetricsControllerUnitTest
     {
-        private CpuMetricsController _cpuMetricsController;
+        private HddMetricsController _hddMetricsController;
 
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
-            _cpuMetricsController = new CpuMetricsController();
+            _hddMetricsController = new HddMetricsController();
         }
 
         [Test]
-        public void GetMetricsFrom_ReturnOk()
+        public void GetLeftFrom_ReturnOk()
         {
             // Arrange
             DateTime fromTime = DateTime.Now;
             DateTime toTime = DateTime.Now.AddDays(1);
 
             // Act
-            var result = _cpuMetricsController.GetMetricsFrom(fromTime, toTime);
+            var result = _hddMetricsController.GetLeftFrom(fromTime, toTime);
 
             // Assert
             Assert.IsAssignableFrom<OkResult>(result);

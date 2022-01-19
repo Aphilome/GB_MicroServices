@@ -3,27 +3,27 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 
-namespace MetricsManagerTests
+namespace MetricsManagerTests.MetricsManagerUnitTests
 {
-    public class DotNetMetricsControllerUnitTest
+    public class RamMetricsControllerUnitTest
     {
-        private DotNetMetricsController _dotNetMetricsController;
+        private RamMetricsController _ramMetricsController;
 
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
-            _dotNetMetricsController = new DotNetMetricsController();
+            _ramMetricsController = new RamMetricsController();
         }
 
         [Test]
-        public void GetErrorsCountFrom_ReturnOk()
+        public void GetMetricsAvailableFrom_ReturnOk()
         {
             // Arrange
             DateTime fromTime = DateTime.Now;
             DateTime toTime = DateTime.Now.AddDays(1);
 
             // Act
-            var result = _dotNetMetricsController.GetErrorsCountFrom(fromTime, toTime);
+            var result = _ramMetricsController.GetMetricsAvailableFrom(fromTime, toTime);
 
             // Assert
             Assert.IsAssignableFrom<OkResult>(result);
