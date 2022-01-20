@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using Moq;
+using MetricsAgent.DAL.Interfaces;
 
 namespace MetricsManagerTests.MetricsManagerUnitTests
 {
@@ -11,12 +12,14 @@ namespace MetricsManagerTests.MetricsManagerUnitTests
     {
         private HddMetricsController _hddMetricsController;
         private Mock<ILogger<HddMetricsController>> _loggerMoq;
+        private Mock<IHddMetricsRepository> _repository;
 
         [SetUp]
         public void SetUp()
         {
             _loggerMoq = new Mock<ILogger<HddMetricsController>>();
-            _hddMetricsController = new HddMetricsController(_loggerMoq.Object);
+            _repository = new Mock<IHddMetricsRepository>();
+            _hddMetricsController = new HddMetricsController(_loggerMoq.Object, _repository.Object);
         }
 
         [Test]

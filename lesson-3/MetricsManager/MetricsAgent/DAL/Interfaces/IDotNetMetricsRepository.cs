@@ -2,7 +2,7 @@
 
 namespace MetricsAgent.DAL.Interfaces
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetric>
+    public interface IDotNetMetricsRepository : IRepository<DotNetMetric>
     {
     }
 }

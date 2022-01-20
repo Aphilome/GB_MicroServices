@@ -1,5 +1,6 @@
 ﻿
 using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -12,12 +13,14 @@ namespace MetricsManagerTests.MetricsManagerUnitTests
     {
         private CpuMetricsController _cpuMetricsController;
         private Mock<ILogger<CpuMetricsController>> _loggerMoq;
+        private Mock<ICpuMetricsRepository> _repository;
 
         [SetUp]
         public void Setup()
         {
             _loggerMoq = new Mock<ILogger<CpuMetricsController>>();
-            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object);
+            _repository = new Mock<ICpuMetricsRepository>();
+            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object, _repository.Object);
         }
 
         [Test]

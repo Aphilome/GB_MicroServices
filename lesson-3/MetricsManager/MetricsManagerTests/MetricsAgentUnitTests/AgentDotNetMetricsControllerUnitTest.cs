@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using Moq;
+using MetricsAgent.DAL.Interfaces;
 
 namespace MetricsManagerTests.MetricsManagerUnitTests
 {
@@ -11,12 +12,14 @@ namespace MetricsManagerTests.MetricsManagerUnitTests
     {
         private DotNetMetricsController _dotNetMetricsController;
         private Mock<ILogger<DotNetMetricsController>> _loggerMoq;
+        private Mock<IDotNetMetricsRepository> _repository;
 
         [SetUp]
         public void Setup()
         {
             _loggerMoq = new Mock<ILogger<DotNetMetricsController>>();
-            _dotNetMetricsController = new DotNetMetricsController(_loggerMoq.Object);
+            _repository = new Mock<IDotNetMetricsRepository>();
+            _dotNetMetricsController = new DotNetMetricsController(_loggerMoq.Object, _repository.Object);
         }
 
         [Test]

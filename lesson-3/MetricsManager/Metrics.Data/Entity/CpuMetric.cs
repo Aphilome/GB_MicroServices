@@ -1,7 +1,4 @@
-﻿using Metrics.Data.Entity;
-using System;
-
-namespace Metrics.Data
+﻿namespace Metrics.Data.Entity
 {
     public class CpuMetric : AMetric<int>
     {

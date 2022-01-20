@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace MetricsAgent.DAL.Concrete
 {
-    public class CpuMetricsRepository : ICpuMetricsRepository
+    public class HddMetricsRepository : IHddMetricsRepository
     {
-        public void Create(CpuMetric item)
+        public void Create(HddMetric item)
         {
             throw new System.NotImplementedException();
         }
@@ -16,17 +16,17 @@ namespace MetricsAgent.DAL.Concrete
             throw new System.NotImplementedException();
         }
 
-        public IList<CpuMetric> GetAll()
+        public IList<HddMetric> GetAll()
         {
             throw new System.NotImplementedException();
         }
 
-        public CpuMetric GetById(int id)
+        public HddMetric GetById(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Update(CpuMetric item)
+        public void Update(HddMetric item)
         {
             throw new System.NotImplementedException();
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MetricsAgent.DAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 
@@ -10,10 +11,14 @@ namespace MetricsAgent.Controllers
     public class NetworkMetricsController : Controller
     {
         private readonly ILogger<NetworkMetricsController> _logger;
+        private readonly INetworkMetricsRepository _repository;
 
-        public NetworkMetricsController(ILogger<NetworkMetricsController> logger)
+        public NetworkMetricsController(
+            ILogger<NetworkMetricsController> logger,
+            INetworkMetricsRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]

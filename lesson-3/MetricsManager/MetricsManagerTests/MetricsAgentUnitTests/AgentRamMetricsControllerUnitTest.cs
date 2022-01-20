@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using Moq;
+using MetricsAgent.DAL.Interfaces;
 
 namespace MetricsManagerTests.MetricsManagerUnitTests
 {
@@ -11,12 +12,14 @@ namespace MetricsManagerTests.MetricsManagerUnitTests
     {
         private RamMetricsController _ramMetricsController;
         private Mock<ILogger<RamMetricsController>> _loggerMoq;
+        private Mock<IRamMetricsRepository> _repository;
 
         [SetUp]
         public void SetUp()
         {
             _loggerMoq = new Mock<ILogger<RamMetricsController>>();
-            _ramMetricsController = new RamMetricsController(_loggerMoq.Object);
+            _repository = new Mock<IRamMetricsRepository>();
+            _ramMetricsController = new RamMetricsController(_loggerMoq.Object, _repository.Object);
         }
 
         [Test]

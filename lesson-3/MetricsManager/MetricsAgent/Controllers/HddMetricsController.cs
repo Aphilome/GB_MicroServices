@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MetricsAgent.DAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 
@@ -12,10 +13,14 @@ namespace MetricsAgent.Controllers
     public class HddMetricsController : Controller
     {
         private readonly ILogger<HddMetricsController> _logger;
+        private readonly IHddMetricsRepository _repository;
 
-        public HddMetricsController(ILogger<HddMetricsController> logger)
+        public HddMetricsController(
+            ILogger<HddMetricsController> logger,
+            IHddMetricsRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         [HttpGet("left/from/{fromTime}/to/{toTime}")]
