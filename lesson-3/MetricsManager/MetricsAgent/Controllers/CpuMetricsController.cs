@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MetricsAgent.DAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 
@@ -11,10 +12,14 @@ namespace MetricsAgent.Controllers
     public class CpuMetricsController : Controller
     {
         private readonly ILogger<CpuMetricsController> _logger;
+        private readonly ICpuMetricsRepository _repository;
 
-        public CpuMetricsController(ILogger<CpuMetricsController> logger)
+        public CpuMetricsController(
+            ILogger<CpuMetricsController> logger, 
+            ICpuMetricsRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]

@@ -2,7 +2,7 @@
 
 namespace Metrics.Data.Entity
 {
-    public abstract class AMetrics<T>
+    public abstract class AMetric<T>
     {
         public int Id { get; set; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Metrics.Data.Entity
 {
-    public class RamMetrics : AMetrics<int>
+    public class HddMetric : AMetric<int>
     {
     }
 }

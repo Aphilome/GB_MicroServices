@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Metrics.Data.Entity
 {
-    public class HddMetrics : AMetrics<int>
+    public class DotNetMetric : AMetric<int>
     {
     }
 }

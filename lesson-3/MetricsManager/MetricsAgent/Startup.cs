@@ -1,3 +1,5 @@
+using MetricsAgent.DAL.Concrete;
+using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +30,7 @@ namespace MetricsAgent
         {
 
             services.AddControllers();
+            services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MetricsAgent", Version = "v1" });
