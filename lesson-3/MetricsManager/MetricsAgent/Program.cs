@@ -38,11 +38,6 @@ namespace MetricsAgent
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                })
                 .UseNLog();  // NLog: Setup NLog for Dependency injection;
     }
 }

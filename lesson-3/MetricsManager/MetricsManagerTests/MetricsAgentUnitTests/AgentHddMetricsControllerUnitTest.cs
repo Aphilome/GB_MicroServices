@@ -1,18 +1,22 @@
 ﻿using MetricsAgent.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
+using Moq;
 
 namespace MetricsManagerTests.MetricsManagerUnitTests
 {
     public class AgentHddMetricsControllerUnitTest
     {
         private HddMetricsController _hddMetricsController;
+        private Mock<ILogger<HddMetricsController>> _loggerMoq;
 
         [SetUp]
         public void SetUp()
         {
-            _hddMetricsController = new HddMetricsController();
+            _loggerMoq = new Mock<ILogger<HddMetricsController>>();
+            _hddMetricsController = new HddMetricsController(_loggerMoq.Object);
         }
 
         [Test]

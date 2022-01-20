@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace MetricsAgent.Controllers
@@ -10,9 +11,17 @@ namespace MetricsAgent.Controllers
     [Route("api/metrics/ram")]
     public class RamMetricsController : Controller
     {
+        private readonly ILogger<RamMetricsController> _logger;
+
+        public RamMetricsController(ILogger<RamMetricsController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsAvailableFrom(DateTime fromTime, DateTime toTime)
         {
+            _logger.LogInformation($"call GetMetricsAvailableFrom {fromTime}-{toTime}");
             return Ok();
         }
     }

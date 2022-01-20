@@ -1,18 +1,22 @@
 ﻿using MetricsAgent.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
+using Moq;
 
 namespace MetricsManagerTests.MetricsManagerUnitTests
 {
     public class AgentDotNetMetricsControllerUnitTest
     {
         private DotNetMetricsController _dotNetMetricsController;
+        private Mock<ILogger<DotNetMetricsController>> _loggerMoq;
 
         [SetUp]
         public void Setup()
         {
-            _dotNetMetricsController = new DotNetMetricsController();
+            _loggerMoq = new Mock<ILogger<DotNetMetricsController>>();
+            _dotNetMetricsController = new DotNetMetricsController(_loggerMoq.Object);
         }
 
         [Test]

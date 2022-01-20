@@ -22,12 +22,7 @@ namespace MetricsManager.Controllers
         [HttpGet("agent/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFrom([FromRoute]DateTime fromTime, [FromRoute]DateTime toTime)
         {
-            _logger.LogTrace("GetMetricsFrom 0");
-            _logger.LogInformation("GetMetricsFrom 1");
-            _logger.LogDebug("GetMetricsFrom 2");
-            _logger.LogWarning("GetMetricsFrom 3");
-            _logger.LogError("GetMetricsFrom 4");
-
+            _logger.LogInformation($"call GetMetricsFrom with {fromTime}-{toTime}");
 
             return Ok();
         }

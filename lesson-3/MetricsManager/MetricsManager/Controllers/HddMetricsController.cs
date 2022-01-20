@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace MetricsManager.Controllers
@@ -10,9 +11,17 @@ namespace MetricsManager.Controllers
     [Route("api/metrics/hdd")]
     public class HddMetricsController : Controller
     {
+        private readonly ILogger<HddMetricsController> _logger;
+
+        public HddMetricsController(ILogger<HddMetricsController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet("agent/left/from/{fromTime}/to/{toTime}")]
         public IActionResult GetLeftFrom(DateTime fromTime, DateTime toTime)
         {
+            _logger.LogInformation($"call GetLeftFrom {fromTime}-{toTime}");
             return Ok();
         }
     }

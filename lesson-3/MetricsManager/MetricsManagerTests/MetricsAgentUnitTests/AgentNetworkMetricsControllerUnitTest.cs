@@ -1,18 +1,22 @@
 ﻿using MetricsAgent.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
+using Moq;
 
 namespace MetricsManagerTests.MetricsManagerUnitTests
 {
     public class AgentNetworkMetricsControllerUnitTest
     {
         private NetworkMetricsController _networkMetricsController;
+        private Mock<ILogger<NetworkMetricsController>> _loggerMoq;
 
         [SetUp]
         public void SetUp()
         {
-            _networkMetricsController = new NetworkMetricsController();
+            _loggerMoq = new Mock<ILogger<NetworkMetricsController>>();
+            _networkMetricsController = new NetworkMetricsController(_loggerMoq.Object);
         }
 
         [Test]

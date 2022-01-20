@@ -1,18 +1,22 @@
 ﻿using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
+using Moq;
 
 namespace MetricsManagerTests.MetricsManagerUnitTests
 {
     public class CpuMetricsControllerUnitTests
     {
         private CpuMetricsController _cpuMetricsController;
+        private Mock<ILogger<CpuMetricsController>> _loggerMoq;
 
         [SetUp]
         public void Setup()
         {
-            _cpuMetricsController = new CpuMetricsController();
+            _loggerMoq = new Mock<ILogger<CpuMetricsController>>();
+            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object);
         }
 
         [Test]
