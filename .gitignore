@@ -1,7 +1,11 @@
-.vs
 .idea
 .DS_Store
+.vs
 Debug/
+Release/
+
+
+
 obj/
 
 
@@ -31,4 +35,3 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-
