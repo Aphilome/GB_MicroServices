@@ -40,9 +40,12 @@ namespace MetricsAgent.Controllers
                 Metrics = new List<CpuMetricDto>()
             };
 
-            foreach (var metric in metrics)
+            if (metrics != null)
             {
-                response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
+                foreach (var metric in metrics)
+                {
+                    response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
+                }
             }
             return Ok(response);
         }   

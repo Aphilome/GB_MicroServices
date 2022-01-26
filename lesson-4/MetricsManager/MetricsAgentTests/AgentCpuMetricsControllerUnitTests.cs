@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using MetricsAgent.Controllers;
 using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,15 @@ namespace MetricsManagerTests
         private CpuMetricsController _cpuMetricsController;
         private Mock<ILogger<CpuMetricsController>> _loggerMoq;
         private Mock<ICpuMetricsRepository> _repository;
+        private Mock<IMapper> _mapperMoq;
 
         [SetUp]
         public void Setup()
         {
             _loggerMoq = new Mock<ILogger<CpuMetricsController>>();
+            _mapperMoq = new Mock<IMapper>();
             _repository = new Mock<ICpuMetricsRepository>();
-            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object, _repository.Object);
+            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object, _repository.Object, _mapperMoq.Object);
         }
 
         [Test]
@@ -35,6 +38,18 @@ namespace MetricsManagerTests
 
             // Assert
             Assert.IsAssignableFrom<OkResult>(result);
+        }
+
+        [Test]
+        public void GetAll_ReturnOk()
+        {
+            // Arrange
+
+            // Act
+            var result = _cpuMetricsController.GetAll();
+
+            // Assert
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
     }
 }

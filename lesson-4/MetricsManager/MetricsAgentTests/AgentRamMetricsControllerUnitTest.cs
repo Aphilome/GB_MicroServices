@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using Moq;
 using MetricsAgent.DAL.Interfaces;
+using AutoMapper;
 
 namespace MetricsManagerTests
 {
@@ -13,13 +14,15 @@ namespace MetricsManagerTests
         private RamMetricsController _ramMetricsController;
         private Mock<ILogger<RamMetricsController>> _loggerMoq;
         private Mock<IRamMetricsRepository> _repository;
+        private Mock<IMapper> _mapperMoq;
 
         [SetUp]
         public void SetUp()
         {
             _loggerMoq = new Mock<ILogger<RamMetricsController>>();
             _repository = new Mock<IRamMetricsRepository>();
-            _ramMetricsController = new RamMetricsController(_loggerMoq.Object, _repository.Object);
+            _mapperMoq = new Mock<IMapper>();
+            _ramMetricsController = new RamMetricsController(_loggerMoq.Object, _repository.Object, _mapperMoq.Object);
         }
 
         [Test]
@@ -34,6 +37,18 @@ namespace MetricsManagerTests
 
             // Assert
             Assert.IsAssignableFrom<OkResult>(result);
+        }
+
+        [Test]
+        public void GetAll_ReturnOk()
+        {
+            // Arrange
+
+            // Act
+            var result = _ramMetricsController.GetAll();
+
+            // Assert
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
     }
 }
