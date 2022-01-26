@@ -2,9 +2,6 @@
 using Metrics.Data.Entity;
 using MetricsAgent.DAL.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Data;
-using System.Data.SQLite;
 
 
 namespace MetricsAgent.DAL.Concrete

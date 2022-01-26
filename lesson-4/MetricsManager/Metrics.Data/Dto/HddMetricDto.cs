@@ -1,6 +1,6 @@
 ﻿namespace Metrics.Data.Dto
 {
-    internal class HddMetricDto : AMetricDto<int>
+    public class HddMetricDto : AMetricDto<int>
     {
     }
 }
