@@ -1,7 +1,12 @@
-﻿using MetricsAgent.DAL.Interfaces;
+﻿using AutoMapper;
+using Metrics.Data.Dto;
+using Metrics.Data.Entity;
+using Metrics.Data.Responses;
+using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
 {
@@ -14,13 +19,33 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<HddMetricsController> _logger;
         private readonly IHddMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
         public HddMetricsController(
             ILogger<HddMetricsController> logger,
-            IHddMetricsRepository repository)
+            IHddMetricsRepository repository,
+            IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
+            _mapper = mapper;
+        }
+
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            IList<HddMetric> metrics = _repository.GetAll();
+
+            var response = new AllHddMetricsResponse()
+            {
+                Metrics = new List<HddMetricDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
+            }
+            return Ok(response);
         }
 
         [HttpGet("left/from/{fromTime}/to/{toTime}")]

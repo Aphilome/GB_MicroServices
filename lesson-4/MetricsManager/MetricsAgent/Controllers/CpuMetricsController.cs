@@ -3,7 +3,6 @@ using Metrics.Data.Dto;
 using Metrics.Data.Entity;
 using Metrics.Data.Responses;
 using MetricsAgent.DAL.Interfaces;
-using MetricsAgent.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

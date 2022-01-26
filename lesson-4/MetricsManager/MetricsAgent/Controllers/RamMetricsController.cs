@@ -1,7 +1,12 @@
-﻿using MetricsAgent.DAL.Interfaces;
+﻿using AutoMapper;
+using Metrics.Data.Dto;
+using Metrics.Data.Entity;
+using Metrics.Data.Responses;
+using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
 {
@@ -14,13 +19,33 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<RamMetricsController> _logger;
         private readonly IRamMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
         public RamMetricsController(
             ILogger<RamMetricsController> logger,
-            IRamMetricsRepository repository)
+            IRamMetricsRepository repository,
+            IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
+            _mapper = mapper;
+        }
+
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            IList<RamMetric> metrics = _repository.GetAll();
+
+            var response = new AllRamMetricsResponse()
+            {
+                Metrics = new List<RamMetricDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(_mapper.Map<RamMetricDto>(metric));
+            }
+            return Ok(response);
         }
 
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
