@@ -1,34 +1,38 @@
-﻿using Metrics.Data.Entity;
+﻿using Dapper;
+using Metrics.Data.Entity;
 using MetricsAgent.DAL.Interfaces;
 using System.Collections.Generic;
+using System.Data.SQLite;
 
 namespace MetricsAgent.DAL.Concrete
 {
-    public class DotNetMetricsRepository : IDotNetMetricsRepository
+    public class DotNetMetricsRepository : RepositoryBase<DotNetMetric, int>, IDotNetMetricsRepository
     {
+        protected override string TableName => "dotnetmetrics";
+
         public void Create(DotNetMetric item)
         {
-            throw new System.NotImplementedException();
+            CreateBase(item);
         }
 
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            DeleteBase(id);
         }
 
         public IList<DotNetMetric> GetAll()
         {
-            throw new System.NotImplementedException();
+            return GetAllBase();
         }
 
         public DotNetMetric GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return GetByIdBase(id);
         }
 
         public void Update(DotNetMetric item)
         {
-            throw new System.NotImplementedException();
+            UpdateBase(item);
         }
     }
 }
