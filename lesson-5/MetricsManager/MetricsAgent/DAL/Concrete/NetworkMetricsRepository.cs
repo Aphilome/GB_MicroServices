@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Metrics.Data.Entity;
 using MetricsAgent.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 
@@ -23,6 +24,11 @@ namespace MetricsAgent.DAL.Concrete
         public IList<NetworkMetric> GetAll()
         {
             return GetAllBase();
+        }
+
+        public IList<NetworkMetric> Get(DateTime fromTime, DateTime toTime)
+        {
+            return GetBase(fromTime, toTime);
         }
 
         public NetworkMetric GetById(int id)

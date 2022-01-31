@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Metrics.Data.Entity;
 using MetricsAgent.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 
 
@@ -23,6 +24,11 @@ namespace MetricsAgent.DAL.Concrete
         public IList<CpuMetric> GetAll()
         {
             return GetAllBase();
+        }
+
+        public IList<CpuMetric> Get(DateTime fromTime, DateTime toTime)
+        {
+            return GetBase(fromTime, toTime);
         }
 
         public CpuMetric GetById(int id)

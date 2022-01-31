@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Metrics.Data.Entity;
 using MetricsAgent.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 
@@ -23,6 +24,11 @@ namespace MetricsAgent.DAL.Concrete
         public IList<HddMetric> GetAll()
         {
             return GetAllBase();
+        }
+
+        public IList<HddMetric> Get(DateTime fromTime, DateTime toTime)
+        {
+            return GetBase(fromTime, toTime);
         }
 
         public HddMetric GetById(int id)

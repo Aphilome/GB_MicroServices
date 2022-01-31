@@ -37,8 +37,25 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation($"call GetAll");
 
             IList<CpuMetric> metrics = _repository.GetAll();
+            var response = GetResponse(metrics);
 
-            var response = new AllCpuMetricsResponse()
+            return Ok(response);
+        }   
+
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetricsFrom([FromRoute]DateTime fromTime, [FromRoute]DateTime toTime)
+        {
+            _logger.LogInformation($"call GetMetricsFrom with {fromTime}-{toTime}");
+
+            IList<CpuMetric> metrics = _repository.Get(fromTime, toTime);
+            var response = GetResponse(metrics);
+
+            return Ok(response);
+        }
+
+        private CpuMetricsResponse GetResponse(IList<CpuMetric> metrics)
+        {
+            var response = new CpuMetricsResponse()
             {
                 Metrics = new List<CpuMetricDto>()
             };
@@ -50,30 +67,8 @@ namespace MetricsAgent.Controllers
                     response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
                 }
             }
-            return Ok(response);
-        }   
 
-        [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFrom([FromRoute]DateTime fromTime, [FromRoute]DateTime toTime)
-        {
-            _logger.LogInformation($"call GetMetricsFrom with {fromTime}-{toTime}");
-
-            IList<CpuMetric> metrics = _repository.GetAll();
-
-            var response = new CpuMetricsResponse()
-            {
-                Metrics = new List<CpuMetricDto>()
-            };
-
-            if (metrics != null)
-            {
-                foreach (var metric in metrics.Where(i => i.DateTime >= fromTime && i.DateTime <= toTime))
-                {
-                    response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
-                }
-            }
-            return Ok(response);
+            return response;
         }
-
     }
 }

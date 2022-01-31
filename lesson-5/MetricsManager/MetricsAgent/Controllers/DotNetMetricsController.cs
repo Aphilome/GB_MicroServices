@@ -36,8 +36,25 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation($"call GetAll");
 
             IList<DotNetMetric> metrics = _repository.GetAll();
+            var response = GetResponse(metrics);
 
-            var response = new AllDotNetMetricsResponse()
+            return Ok(response);
+        }
+
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IActionResult GetErrorsCountFrom(DateTime fromTime, DateTime toTime)
+        {
+            _logger.LogInformation($"call GetErrorsCountFrom {fromTime}-{toTime}");
+            
+            IList<DotNetMetric> metrics = _repository.GetAll();
+            var response = GetResponse(metrics);
+
+            return Ok(response);
+        }
+
+        private DotNetMetricsResponse GetResponse(IList<DotNetMetric> metrics)
+        {
+            var response = new DotNetMetricsResponse()
             {
                 Metrics = new List<DotNetMetricDto>()
             };
@@ -49,28 +66,8 @@ namespace MetricsAgent.Controllers
                     response.Metrics.Add(_mapper.Map<DotNetMetricDto>(metric));
                 }
             }
-            return Ok(response);
-        }
 
-        [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetErrorsCountFrom(DateTime fromTime, DateTime toTime)
-        {
-            _logger.LogInformation($"call GetErrorsCountFrom {fromTime}-{toTime}");
-            IList<DotNetMetric> metrics = _repository.GetAll();
-
-            var response = new DotNetMetricsResponse()
-            {
-                Metrics = new List<DotNetMetricDto>()
-            };
-
-            if (metrics != null)
-            {
-                foreach (var metric in metrics.Where(i => i.DateTime >= fromTime && i.DateTime <= toTime))
-                {
-                    response.Metrics.Add(_mapper.Map<DotNetMetricDto>(metric));
-                }
-            }
-            return Ok(response);
+            return response;
         }
     }
 }

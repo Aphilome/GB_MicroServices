@@ -38,8 +38,25 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation($"call GetAll");
 
             IList<RamMetric> metrics = _repository.GetAll();
+            var response = GetResponse(metrics);
 
-            var response = new AllRamMetricsResponse()
+            return Ok(response);
+        }
+
+        [HttpGet("available/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetricsAvailableFrom(DateTime fromTime, DateTime toTime)
+        {
+            _logger.LogInformation($"call GetMetricsAvailableFrom {fromTime}-{toTime}");
+
+            IList<RamMetric> metrics = _repository.GetAll();
+            var response = GetResponse(metrics);
+
+            return Ok(response);
+        }
+
+        private RamMetricsResponse GetResponse(IList<RamMetric> metrics)
+        {
+            var response = new RamMetricsResponse()
             {
                 Metrics = new List<RamMetricDto>()
             };
@@ -51,28 +68,8 @@ namespace MetricsAgent.Controllers
                     response.Metrics.Add(_mapper.Map<RamMetricDto>(metric));
                 }
             }
-            return Ok(response);
-        }
 
-        [HttpGet("available/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsAvailableFrom(DateTime fromTime, DateTime toTime)
-        {
-            _logger.LogInformation($"call GetMetricsAvailableFrom {fromTime}-{toTime}");
-            IList<RamMetric> metrics = _repository.GetAll();
-
-            var response = new RamMetricsResponse()
-            {
-                Metrics = new List<RamMetricDto>()
-            };
-
-            if (metrics != null)
-            {
-                foreach (var metric in metrics.Where(i => i.DateTime >= fromTime && i.DateTime <= toTime))
-                {
-                    response.Metrics.Add(_mapper.Map<RamMetricDto>(metric));
-                }
-            }
-            return Ok(response);
+            return response;
         }
     }
 }

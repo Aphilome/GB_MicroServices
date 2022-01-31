@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Metrics.Data.Entity;
 using MetricsAgent.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace MetricsAgent.DAL.Concrete
@@ -22,6 +23,11 @@ namespace MetricsAgent.DAL.Concrete
         public IList<DotNetMetric> GetAll()
         {
             return GetAllBase();
+        }
+
+        public IList<DotNetMetric> Get(DateTime fromTime, DateTime toTime)
+        {
+            return GetBase(fromTime, toTime);
         }
 
         public DotNetMetric GetById(int id)

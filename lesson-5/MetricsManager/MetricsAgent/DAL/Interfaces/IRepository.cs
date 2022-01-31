@@ -1,4 +1,5 @@
 ﻿using Metrics.Data.Entity;
+using System;
 using System.Collections.Generic;
 
 namespace MetricsAgent.DAL.Interfaces
@@ -7,6 +8,8 @@ namespace MetricsAgent.DAL.Interfaces
         where T : class
     {
         IList<T> GetAll();
+
+        IList<T> Get(DateTime fromTime, DateTime toTime);
 
         T GetById(int id);
 

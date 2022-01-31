@@ -38,8 +38,25 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation($"call GetAll");
             
             IList<HddMetric> metrics = _repository.GetAll();
+            var response = GetResponse(metrics);
 
-            var response = new AllHddMetricsResponse()
+            return Ok(response);
+        }
+
+        [HttpGet("left/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetLeftFrom(DateTime fromTime, DateTime toTime)
+        {
+            _logger.LogInformation($"call GetLeftFrom {fromTime}-{toTime}");
+
+            IList<HddMetric> metrics = _repository.GetAll();
+            var response = GetResponse(metrics);
+
+            return Ok(response);
+        }
+
+        private HddMetricsResponse GetResponse(IList<HddMetric> metrics)
+        {
+            var response = new HddMetricsResponse()
             {
                 Metrics = new List<HddMetricDto>()
             };
@@ -51,28 +68,8 @@ namespace MetricsAgent.Controllers
                     response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
                 }
             }
-            return Ok(response);
-        }
 
-        [HttpGet("left/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetLeftFrom(DateTime fromTime, DateTime toTime)
-        {
-            _logger.LogInformation($"call GetLeftFrom {fromTime}-{toTime}");
-            IList<HddMetric> metrics = _repository.GetAll();
-
-            var response = new HddMetricsResponse()
-            {
-                Metrics = new List<HddMetricDto>()
-            };
-
-            if (metrics != null)
-            {
-                foreach (var metric in metrics.Where(i => i.DateTime >= fromTime && i.DateTime <= toTime))
-                {
-                    response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
-                }
-            }
-            return Ok(response);
+            return response;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Metrics.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
@@ -42,6 +43,19 @@ namespace MetricsAgent.DAL.Concrete
             using (var connection = new SQLiteConnection(ConnectionString))
             {
                 return connection.Query<T>($"SELECT Id, DateTime, Value FROM {TableName}").ToList();
+            }
+        }
+
+        public IList<T> GetBase(DateTime from, DateTime to)
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<T>($"SELECT Id, DateTime, Value FROM {TableName} WHERE DateTime > @fromTime AND DateTime < @toTime",
+                    new
+                    {
+                        fromTime = from,
+                        toTime = to
+                    }).ToList();
             }
         }
 
