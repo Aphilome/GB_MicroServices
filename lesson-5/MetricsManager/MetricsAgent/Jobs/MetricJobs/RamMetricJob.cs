@@ -1,4 +1,5 @@
-﻿using MetricsAgent.DAL.Interfaces;
+﻿using Metrics.Data.Entity;
+using MetricsAgent.DAL.Interfaces;
 using Quartz;
 using System;
 using System.Diagnostics;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent.Jobs.MetricJobs
 {
-    public class RamMetricJob : IJob
+    public class RamMetricJob : AMetricJobBase<RamMetric, int>, IJob
     {
         private IRamMetricsRepository _repository;
         private PerformanceCounter _ramCounter;
@@ -19,18 +20,8 @@ namespace MetricsAgent.Jobs.MetricJobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            // получаем значение занятости CPU
-            var cpuUsageInPercents = Convert.ToInt32(_ramCounter.NextValue());
-
-            // узнаем когда мы сняли значение метрики.
-            var dateTime = DateTime.UtcNow;
-
-            // теперь можно записать что-то при помощи репозитория
-            _repository.Create(new Metrics.Data.Entity.RamMetric
-            {
-                DateTime = dateTime,
-                Value = cpuUsageInPercents
-            });
+            var metric = GetMetricBase(_ramCounter);
+            _repository.Create(metric);
 
             return Task.CompletedTask;
         }
