@@ -4,18 +4,16 @@ using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using FluentMigrator.Runner;
-using System.Threading.Tasks;
+using Quartz.Spi;
+using MetricsAgent.Jobs;
+using Quartz;
+using Quartz.Impl;
+using MetricsAgent.Jobs.MetricJobs;
 
 namespace MetricsAgent
 {
@@ -61,6 +59,32 @@ namespace MetricsAgent
                 ).AddLogging(lb => lb
                     .AddFluentMigratorConsole());
 
+            // ДОбавляем сервисы
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            // добавляем нашу задачу
+            services.AddSingleton<CpuMetricJob>();
+            services.AddSingleton<DotNetMetricJob>();
+            services.AddSingleton<HddMetricJob>();
+            services.AddSingleton<NetworkMetricJob>();
+            services.AddSingleton<RamMetricJob>();
+
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(CpuMetricJob),
+                cronExpression: "0/5 * * * * ?")); // запускать каждые 5 секунд
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricJob),
+                cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(HddMetricJob),
+                cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricJob),
+                cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(RamMetricJob),
+                cronExpression: "0/5 * * * * ?"));
+            services.AddHostedService<QuartzHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
