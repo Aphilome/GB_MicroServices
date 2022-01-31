@@ -10,18 +10,28 @@ namespace MetricsAgent.Jobs.MetricJobs
     public class NetworkMetricJob : AMetricJobBase<NetworkMetric, int>, IJob
     {
         private INetworkMetricsRepository _repository;
-        private PerformanceCounter _networkCounter;
+        private string[] _adapterNames;
 
         public NetworkMetricJob(INetworkMetricsRepository repository)
         {
             _repository = repository;
-            _networkCounter = new PerformanceCounter("Network Interface", "Bytes Total/sec");
+            var networkCounterCategory = new PerformanceCounterCategory("Network Interface");
+            _adapterNames = networkCounterCategory.GetInstanceNames();
         }
 
         public Task Execute(IJobExecutionContext context)
         {
-            //var metric = GetMetricBase(_networkCounter);
-            //_repository.Create(metric);
+            float networkSpeed = 0;
+            foreach (var adapterName in _adapterNames)
+            {
+                var networkCounter = new PerformanceCounter("Network Interface", "Bytes Received/sec", adapterName);
+                networkSpeed += networkCounter.NextValue();
+            }
+            _repository.Create(new NetworkMetric
+            {
+                DateTime = DateTime.UtcNow,
+                Value = Convert.ToInt32(networkSpeed)
+            });
 
             return Task.CompletedTask;
         }
