@@ -20,8 +20,8 @@ namespace MetricsAgent.Jobs.MetricJobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            var metric = GetMetricBase(_networkCounter);
-            _repository.Create(metric);
+            //var metric = GetMetricBase(_networkCounter);
+            //_repository.Create(metric);
 
             return Task.CompletedTask;
         }
