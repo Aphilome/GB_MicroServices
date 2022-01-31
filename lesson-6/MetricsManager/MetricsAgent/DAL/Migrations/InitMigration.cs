@@ -2,7 +2,7 @@
 
 namespace MetricsAgent.DAL.Migrations
 {
-    [Migration(1)]
+    [Migration(2)]
     public class InitMigration : Migration
     {
         public override void Up()
@@ -10,27 +10,27 @@ namespace MetricsAgent.DAL.Migrations
             Create.Table("cpumetrics")
                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                .WithColumn("Value").AsInt32()
-               .WithColumn("DateTime").AsInt64();
+               .WithColumn("DateTime").AsDateTime();
             
             Create.Table("dotnetmetrics")
                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                .WithColumn("Value").AsInt32()
-               .WithColumn("DateTime").AsInt64();
+               .WithColumn("DateTime").AsDateTime();
             
             Create.Table("hddmetrics")
                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                .WithColumn("Value").AsInt32()
-               .WithColumn("DateTime").AsInt64();
+               .WithColumn("DateTime").AsDateTime();
             
             Create.Table("networkmetrics")
                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                .WithColumn("Value").AsInt32()
-               .WithColumn("DateTime").AsInt64();
+               .WithColumn("DateTime").AsDateTime();
             
             Create.Table("rammetrics")
                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                .WithColumn("Value").AsInt32()
-               .WithColumn("DateTime").AsInt64();
+               .WithColumn("DateTime").AsDateTime();
         }
 
         public override void Down()
