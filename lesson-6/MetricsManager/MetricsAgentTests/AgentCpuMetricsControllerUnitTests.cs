@@ -37,7 +37,7 @@ namespace MetricsManagerTests
             var result = _cpuMetricsController.GetMetricsFrom(fromTime, toTime);
 
             // Assert
-            Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
 
         [Test]

@@ -36,7 +36,7 @@ namespace MetricsManagerTests
             var result = _dotNetMetricsController.GetErrorsCountFrom(fromTime, toTime);
 
             // Assert
-            Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
 
         [Test]
