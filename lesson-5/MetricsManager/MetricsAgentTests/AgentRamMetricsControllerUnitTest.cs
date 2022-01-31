@@ -36,7 +36,7 @@ namespace MetricsManagerTests
             var result = _ramMetricsController.GetMetricsAvailableFrom(fromTime, toTime);
 
             // Assert
-            Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
 
         [Test]

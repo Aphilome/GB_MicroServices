@@ -36,7 +36,7 @@ namespace MetricsManagerTests
             var result = _hddMetricsController.GetLeftFrom(fromTime, toTime);
 
             // Assert
-            Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
 
         [Test]
