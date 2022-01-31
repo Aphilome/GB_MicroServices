@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MetricsAgent.Controllers
 {
@@ -32,6 +33,8 @@ namespace MetricsAgent.Controllers
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation($"call GetAll");
+
             IList<DotNetMetric> metrics = _repository.GetAll();
 
             var response = new AllDotNetMetricsResponse()
@@ -53,7 +56,21 @@ namespace MetricsAgent.Controllers
         public IActionResult GetErrorsCountFrom(DateTime fromTime, DateTime toTime)
         {
             _logger.LogInformation($"call GetErrorsCountFrom {fromTime}-{toTime}");
-            return Ok();
+            IList<DotNetMetric> metrics = _repository.GetAll();
+
+            var response = new DotNetMetricsResponse()
+            {
+                Metrics = new List<DotNetMetricDto>()
+            };
+
+            if (metrics != null)
+            {
+                foreach (var metric in metrics.Where(i => i.DateTime >= fromTime && i.DateTime <= toTime))
+                {
+                    response.Metrics.Add(_mapper.Map<DotNetMetricDto>(metric));
+                }
+            }
+            return Ok(response);
         }
     }
 }

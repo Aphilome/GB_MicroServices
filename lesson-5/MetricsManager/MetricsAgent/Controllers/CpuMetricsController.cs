@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MetricsAgent.Controllers
 {
@@ -33,6 +34,8 @@ namespace MetricsAgent.Controllers
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation($"call GetAll");
+
             IList<CpuMetric> metrics = _repository.GetAll();
 
             var response = new AllCpuMetricsResponse()
@@ -54,7 +57,23 @@ namespace MetricsAgent.Controllers
         public IActionResult GetMetricsFrom([FromRoute]DateTime fromTime, [FromRoute]DateTime toTime)
         {
             _logger.LogInformation($"call GetMetricsFrom with {fromTime}-{toTime}");
-            return Ok();
+
+            IList<CpuMetric> metrics = _repository.GetAll();
+
+            var response = new CpuMetricsResponse()
+            {
+                Metrics = new List<CpuMetricDto>()
+            };
+
+            if (metrics != null)
+            {
+                foreach (var metric in metrics.Where(i => i.DateTime >= fromTime && i.DateTime <= toTime))
+                {
+                    response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
+                }
+            }
+            return Ok(response);
         }
+
     }
 }
