@@ -10,6 +10,8 @@ namespace MetricsManager.DAL.Interfaces
 
         IList<T> Get(DateTime fromTime, DateTime toTime);
 
+        DateTime GetLastMetricDate();
+
         T GetById(int id);
 
         void Create(T item);

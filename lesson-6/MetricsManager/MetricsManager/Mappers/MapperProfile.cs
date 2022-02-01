@@ -13,6 +13,12 @@ namespace MetricsManager.Mappers
             CreateMap<HddMetric, HddMetricDto>();
             CreateMap<NetworkMetric, NetworkMetricDto>();
             CreateMap<RamMetric, RamMetricDto>();
+
+            CreateMap<CpuMetricDto, CpuMetric>();
+            CreateMap<DotNetMetricDto, DotNetMetric>();
+            CreateMap<HddMetricDto, HddMetric>();
+            CreateMap<NetworkMetricDto, NetworkMetric>();
+            CreateMap<RamMetricDto, RamMetric>();
         }
     }
 }

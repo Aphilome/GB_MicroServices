@@ -28,7 +28,7 @@ namespace MetricsManager.Controllers
         {
             _logger.LogInformation($"call GetErrorsCountFrom {fromTime}-{toTime}");
 
-            var response = await _metricsAgentClient.GetDonNetMetrics(new DotNetMetricsRequest
+            var response = await _metricsAgentClient.GetDotNetMetrics(new DotNetMetricsRequest
             {
                 FromTime = fromTime,
                 ToTime = toTime

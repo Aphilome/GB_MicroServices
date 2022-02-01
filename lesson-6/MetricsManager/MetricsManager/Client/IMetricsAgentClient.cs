@@ -12,7 +12,7 @@ namespace MetricsManager.Client
 
         Task<NetworkMetricsResponse> GetNetworkMetrics(NetworkMetricsRequest request);
 
-        Task<DotNetMetricsResponse> GetDonNetMetrics(DotNetMetricsRequest request);
+        Task<DotNetMetricsResponse> GetDotNetMetrics(DotNetMetricsRequest request);
 
         Task<CpuMetricsResponse> GetCpuMetrics(CpuMetricsRequest request);
     }

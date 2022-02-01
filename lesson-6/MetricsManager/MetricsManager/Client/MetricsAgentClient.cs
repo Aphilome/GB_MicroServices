@@ -24,7 +24,7 @@ namespace MetricsManager.Client
             return await SendRequest<CpuMetricsResponse>(request.Url);
         }
 
-        public async Task<DotNetMetricsResponse> GetDonNetMetrics(DotNetMetricsRequest request)
+        public async Task<DotNetMetricsResponse> GetDotNetMetrics(DotNetMetricsRequest request)
         {
             return await SendRequest<DotNetMetricsResponse>(request.Url);
         }

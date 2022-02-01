@@ -81,5 +81,14 @@ namespace MetricsManager.DAL.Concrete
                     });
             }
         }
+
+        // возвращает последнюю дату из полученных метрик. Если пусто, то берется данные месяц назад
+        public DateTime GetLastMetricDateBase()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.QueryFirstOrDefault<DateTime?>($"SELECT DateTime FROM {TableName} ORDER BY DateTime DESC LIMIT 1") ?? DateTime.UtcNow.AddMonths(-1);
+            }
+        }
     }
 }

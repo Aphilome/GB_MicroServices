@@ -39,5 +39,10 @@ namespace MetricsManager.DAL.Concrete
         {
             UpdateBase(item);
         }
+
+        public DateTime GetLastMetricDate()
+        {
+            return GetLastMetricDateBase();
+        }
     }
 }
