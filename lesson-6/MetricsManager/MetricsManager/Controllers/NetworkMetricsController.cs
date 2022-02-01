@@ -1,9 +1,9 @@
-﻿using Metrics.Data.Responses;
+﻿using Metrics.Data.Requests;
+using MetricsManager.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Net.Http;
-using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace MetricsManager.Controllers
 {
@@ -13,35 +13,28 @@ namespace MetricsManager.Controllers
     public class NetworkMetricsController : Controller
     {
         private readonly ILogger<NetworkMetricsController> _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IMetricsAgentClient _metricsAgentClient;
 
         public NetworkMetricsController(
             ILogger<NetworkMetricsController> logger,
-            IHttpClientFactory httpClientFactory)
+            IMetricsAgentClient metricsAgentClient)
         {
             _logger = logger;
-            _httpClientFactory = httpClientFactory;
+            _metricsAgentClient = metricsAgentClient;
         }
 
         [HttpGet("agent/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFrom(DateTime fromTime, DateTime toTime)
+        public async Task<IActionResult> GetMetricsFrom(DateTime fromTime, DateTime toTime)
         {
             _logger.LogInformation($"call GetMetricsFrom {fromTime}-{toTime}");
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5001/api/metrics/network/all");
-            request.Headers.Add("Accept", "application/vnd.github.v3+json");
-            var client = _httpClientFactory.CreateClient();
-            HttpResponseMessage response = client.SendAsync(request).Result;
-            if (response.IsSuccessStatusCode)
+            var response = await _metricsAgentClient.GetNetworkMetrics(new NetworkMetricsRequest
             {
-                using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                var metricsResponse = JsonSerializer.DeserializeAsync<NetworkMetricsResponse>(responseStream).Result;
-            }
-            else
-            {
-                _logger.LogError(response.ReasonPhrase);
-                return Problem();
-            }
+                FromTime = fromTime,
+                ToTime = toTime
+            });
+            _logger.LogInformation($"recived: {response.Metrics?.Count}");
+
             return Ok();
         }
     }
