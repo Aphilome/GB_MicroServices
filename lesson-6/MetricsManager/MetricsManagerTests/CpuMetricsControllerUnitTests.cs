@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using Moq;
+using MetricsManager.Client;
 
 namespace MetricsManagerTests
 {
@@ -11,12 +12,14 @@ namespace MetricsManagerTests
     {
         private CpuMetricsController _cpuMetricsController;
         private Mock<ILogger<CpuMetricsController>> _loggerMoq;
+        private Mock<IMetricsAgentClient> _metricsClientMoq;
 
         [SetUp]
         public void Setup()
         {
             _loggerMoq = new Mock<ILogger<CpuMetricsController>>();
-            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object);
+            _metricsClientMoq = new Mock<IMetricsAgentClient>();
+            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object, _metricsClientMoq.Object);
         }
 
         [Test]

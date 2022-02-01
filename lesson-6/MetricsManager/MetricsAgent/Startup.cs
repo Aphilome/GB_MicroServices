@@ -33,20 +33,34 @@ namespace MetricsAgent
         {
             services.AddControllers();
 
+            #region Repositories
+
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSingleton<IDotNetMetricsRepository, DotNetMetricsRepository>();
             services.AddSingleton<IHddMetricsRepository, HddMetricsRepository>();
             services.AddSingleton<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddSingleton<IRamMetricsRepository, RamMetricsRepository>();
 
+            #endregion
+
+            #region Swagger
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MetricsAgent", Version = "v1" });
             });
 
+            #endregion
+
+            #region Mapper
+
             var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
             var mapper = mapperConfiguration.CreateMapper();
             services.AddSingleton(mapper);
+
+            #endregion
+
+            #region Migrator
 
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
@@ -58,6 +72,10 @@ namespace MetricsAgent
                     .ScanIn(typeof(Startup).Assembly).For.Migrations()
                 ).AddLogging(lb => lb
                     .AddFluentMigratorConsole());
+
+            #endregion
+
+            #region Jobs
 
             // ДОбавляем сервисы
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
@@ -85,6 +103,8 @@ namespace MetricsAgent
                 jobType: typeof(RamMetricJob),
                 cronExpression: "0/5 * * * * ?"));
             services.AddHostedService<QuartzHostedService>();
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

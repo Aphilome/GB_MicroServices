@@ -35,7 +35,7 @@ namespace MetricsManager.Controllers
                 FromTime = fromTime,
                 ToTime = toTime
             });
-            _logger.LogInformation($"recived: {response.Metrics?.Count}");
+            _logger.LogInformation($"recived: {response?.Metrics?.Count}");
 
             return Ok();
         }
