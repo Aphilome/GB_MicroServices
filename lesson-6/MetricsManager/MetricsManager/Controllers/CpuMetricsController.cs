@@ -1,13 +1,15 @@
-﻿using Metrics.Data.Requests;
-using MetricsManager.Client;
+﻿using AutoMapper;
+using Metrics.Data.Dto;
+using Metrics.Data.Entity;
+using Metrics.Data.Responses;
+using MetricsManager.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MetricsManager.Controllers
 {
-
     //api/metrics/cpu/from/{fromTime}/to/{toTime}/
     //https://localhost:5001/api/metrics/cpu/from/21.12.2020/to/30.12.2020/
 
@@ -16,29 +18,46 @@ namespace MetricsManager.Controllers
     public class CpuMetricsController : Controller
     {
         private readonly ILogger<CpuMetricsController> _logger;
-        private readonly IMetricsAgentClient _metricsAgentClient;
+        private readonly ICpuMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
         public CpuMetricsController(
             ILogger<CpuMetricsController> logger,
-            IMetricsAgentClient metricsAgentClient)
+            ICpuMetricsRepository repository,
+            IMapper mapper)
         {
             _logger = logger;
-            _metricsAgentClient = metricsAgentClient;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("agent/from/{fromTime}/to/{toTime}")]
-        public async Task<IActionResult> GetMetricsFrom([FromRoute]DateTime fromTime, [FromRoute]DateTime toTime)
+        public IActionResult GetMetricsFrom([FromRoute]DateTime fromTime, [FromRoute]DateTime toTime)
         {
             _logger.LogInformation($"call GetMetricsFrom with {fromTime}-{toTime}");
 
-            var response = await _metricsAgentClient.GetCpuMetrics(new CpuMetricsRequest
-            {
-                FromTime = fromTime,
-                ToTime = toTime
-            });
-            _logger.LogInformation($"recived: {response?.Metrics?.Count}");
+            IList<CpuMetric> metrics = _repository.Get(fromTime, toTime);
+            var response = GetResponse(metrics);
 
-            return Ok();
+            return Ok(response);
+        }
+
+        private CpuMetricsResponse GetResponse(IList<CpuMetric> metrics)
+        {
+            var response = new CpuMetricsResponse()
+            {
+                Metrics = new List<CpuMetricDto>()
+            };
+
+            if (metrics != null)
+            {
+                foreach (var metric in metrics)
+                {
+                    response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
+                }
+            }
+
+            return response;
         }
     }
 }

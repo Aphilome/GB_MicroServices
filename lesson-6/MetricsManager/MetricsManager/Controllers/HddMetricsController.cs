@@ -1,9 +1,12 @@
-﻿using Metrics.Data.Requests;
-using MetricsManager.Client;
+﻿using AutoMapper;
+using Metrics.Data.Dto;
+using Metrics.Data.Entity;
+using Metrics.Data.Responses;
+using MetricsManager.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MetricsManager.Controllers
 {
@@ -15,29 +18,46 @@ namespace MetricsManager.Controllers
     public class HddMetricsController : Controller
     {
         private readonly ILogger<HddMetricsController> _logger;
-        private readonly IMetricsAgentClient _metricsAgentClient;
+        private readonly IHddMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
         public HddMetricsController(
             ILogger<HddMetricsController> logger,
-            IMetricsAgentClient metricsAgentClient)
+            IHddMetricsRepository repository,
+            IMapper mapper)
         {
             _logger = logger;
-            _metricsAgentClient = metricsAgentClient;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("agent/left/from/{fromTime}/to/{toTime}")]
-        public async Task<IActionResult> GetLeftFrom(DateTime fromTime, DateTime toTime)
+        public IActionResult GetLeftFrom(DateTime fromTime, DateTime toTime)
         {
             _logger.LogInformation($"call GetLeftFrom {fromTime}-{toTime}");
 
-            var response = await _metricsAgentClient.GetHddMetrics(new HddMetricsRequest
-            {
-                FromTime = fromTime,
-                ToTime = toTime
-            });
-            _logger.LogInformation($"recived: {response?.Metrics?.Count}");
+            IList<HddMetric> metrics = _repository.Get(fromTime, toTime);
+            var response = GetResponse(metrics);
 
-            return Ok();
+            return Ok(response);
+        }
+
+        private HddMetricsResponse GetResponse(IList<HddMetric> metrics)
+        {
+            var response = new HddMetricsResponse()
+            {
+                Metrics = new List<HddMetricDto>()
+            };
+
+            if (metrics != null)
+            {
+                foreach (var metric in metrics)
+                {
+                    response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
+                }
+            }
+
+            return response;
         }
     }
 }

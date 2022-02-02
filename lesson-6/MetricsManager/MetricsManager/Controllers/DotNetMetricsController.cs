@@ -1,9 +1,12 @@
-﻿using Metrics.Data.Requests;
-using MetricsManager.Client;
+﻿using AutoMapper;
+using Metrics.Data.Dto;
+using Metrics.Data.Entity;
+using Metrics.Data.Responses;
+using MetricsManager.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MetricsManager.Controllers
 {
@@ -13,29 +16,46 @@ namespace MetricsManager.Controllers
     public class DotNetMetricsController : Controller
     {
         private readonly ILogger<DotNetMetricsController> _logger;
-        private readonly IMetricsAgentClient _metricsAgentClient;
+        private readonly IDotNetMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
         public DotNetMetricsController(
             ILogger<DotNetMetricsController> logger,
-            IMetricsAgentClient metricsAgentClient)
+            IDotNetMetricsRepository repository,
+            IMapper mapper)
         {
             _logger = logger;
-            _metricsAgentClient = metricsAgentClient;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("agent/from/{fromTime}/to/{toTime}")]
-        public async Task<IActionResult> GetErrorsCountFrom(DateTime fromTime, DateTime toTime)
+        public IActionResult GetErrorsCountFrom(DateTime fromTime, DateTime toTime)
         {
             _logger.LogInformation($"call GetErrorsCountFrom {fromTime}-{toTime}");
 
-            var response = await _metricsAgentClient.GetDotNetMetrics(new DotNetMetricsRequest
-            {
-                FromTime = fromTime,
-                ToTime = toTime
-            });
-            _logger.LogInformation($"recived: {response?.Metrics?.Count}");
+            IList<DotNetMetric> metrics = _repository.Get(fromTime, toTime);
+            var response = GetResponse(metrics);
 
-            return Ok();
+            return Ok(response);
+        }
+
+        private DotNetMetricsResponse GetResponse(IList<DotNetMetric> metrics)
+        {
+            var response = new DotNetMetricsResponse()
+            {
+                Metrics = new List<DotNetMetricDto>()
+            };
+
+            if (metrics != null)
+            {
+                foreach (var metric in metrics)
+                {
+                    response.Metrics.Add(_mapper.Map<DotNetMetricDto>(metric));
+                }
+            }
+
+            return response;
         }
     }
 }
