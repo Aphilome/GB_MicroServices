@@ -5,6 +5,8 @@ using NUnit.Framework;
 using System;
 using Moq;
 using MetricsManager.Client;
+using MetricsManager.DAL.Interfaces;
+using AutoMapper;
 
 namespace MetricsManagerTests
 {
@@ -12,14 +14,16 @@ namespace MetricsManagerTests
     {
         private HddMetricsController _hddMetricsController;
         private Mock<ILogger<HddMetricsController>> _loggerMoq;
-        private Mock<IMetricsAgentClient> _metricsClientMoq;
+        private Mock<IHddMetricsRepository> _repositoryMoq;
+        private Mock<IMapper> _mapperMoq;
 
         [SetUp]
         public void SetUp()
         {
             _loggerMoq = new Mock<ILogger<HddMetricsController>>();
-            _metricsClientMoq = new Mock<IMetricsAgentClient>();
-            _hddMetricsController = new HddMetricsController(_loggerMoq.Object, _metricsClientMoq.Object);
+            _repositoryMoq = new Mock<IHddMetricsRepository>();
+            _mapperMoq = new Mock<IMapper>();
+            _hddMetricsController = new HddMetricsController(_loggerMoq.Object, _repositoryMoq.Object, _mapperMoq.Object);
         }
 
         [Test]
@@ -33,7 +37,7 @@ namespace MetricsManagerTests
             var result = _hddMetricsController.GetLeftFrom(fromTime, toTime);
 
             // Assert
-            Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
     }
 }

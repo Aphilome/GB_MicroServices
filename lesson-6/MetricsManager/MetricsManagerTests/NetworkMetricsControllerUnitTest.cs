@@ -5,6 +5,8 @@ using NUnit.Framework;
 using System;
 using Moq;
 using MetricsManager.Client;
+using MetricsManager.DAL.Interfaces;
+using AutoMapper;
 
 namespace MetricsManagerTests
 {
@@ -12,14 +14,16 @@ namespace MetricsManagerTests
     {
         private NetworkMetricsController _networkMetricsController;
         private Mock<ILogger<NetworkMetricsController>> _loggerMoq;
-        private Mock<IMetricsAgentClient> _metricsClientMoq;
+        private Mock<INetworkMetricsRepository> _repositoryMoq;
+        private Mock<IMapper> _mapperMoq;
 
         [SetUp]
         public void SetUp()
         {
             _loggerMoq = new Mock<ILogger<NetworkMetricsController>>();
-            _metricsClientMoq = new Mock<IMetricsAgentClient>();
-            _networkMetricsController = new NetworkMetricsController(_loggerMoq.Object, _metricsClientMoq.Object);
+            _repositoryMoq = new Mock<INetworkMetricsRepository>();
+            _mapperMoq = new Mock<IMapper>();
+            _networkMetricsController = new NetworkMetricsController(_loggerMoq.Object, _repositoryMoq.Object, _mapperMoq.Object);
         }
 
         [Test]
@@ -33,7 +37,7 @@ namespace MetricsManagerTests
             var result = _networkMetricsController.GetMetricsFrom(fromTime, toTime);
 
             // Assert
-            Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
     }
 }

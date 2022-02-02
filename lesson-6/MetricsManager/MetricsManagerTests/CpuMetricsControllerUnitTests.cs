@@ -4,7 +4,8 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using Moq;
-using MetricsManager.Client;
+using AutoMapper;
+using MetricsManager.DAL.Interfaces;
 
 namespace MetricsManagerTests
 {
@@ -12,14 +13,16 @@ namespace MetricsManagerTests
     {
         private CpuMetricsController _cpuMetricsController;
         private Mock<ILogger<CpuMetricsController>> _loggerMoq;
-        private Mock<IMetricsAgentClient> _metricsClientMoq;
+        private Mock<ICpuMetricsRepository> _repositoryMoq;
+        private Mock<IMapper> _mapperMoq;
 
         [SetUp]
         public void Setup()
         {
             _loggerMoq = new Mock<ILogger<CpuMetricsController>>();
-            _metricsClientMoq = new Mock<IMetricsAgentClient>();
-            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object, _metricsClientMoq.Object);
+            _repositoryMoq = new Mock<ICpuMetricsRepository>();
+            _mapperMoq = new Mock<IMapper>();
+            _cpuMetricsController = new CpuMetricsController(_loggerMoq.Object, _repositoryMoq.Object, _mapperMoq.Object);
         }
 
         [Test]
@@ -33,7 +36,7 @@ namespace MetricsManagerTests
             var result = _cpuMetricsController.GetMetricsFrom(fromTime, toTime);
 
             // Assert
-            Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkObjectResult>(result);
         }
     }
 }

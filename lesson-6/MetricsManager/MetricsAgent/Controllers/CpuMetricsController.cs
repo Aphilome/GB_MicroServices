@@ -35,7 +35,6 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation($"call GetAll");
 
             IList<CpuMetric> metrics = _repository.GetAll();
-            _logger.LogInformation($"read: {metrics.Count}");
             var response = GetResponse(metrics);
 
             return Ok(response);
