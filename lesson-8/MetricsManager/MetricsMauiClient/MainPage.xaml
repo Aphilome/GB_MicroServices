@@ -1,0 +1,111 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MetricsMauiClient.MainPage"
+             BackgroundColor="{DynamicResource SecondaryColor}"
+             HeightRequest="500">
+
+    <ScrollView>
+        <Grid RowSpacing="25" RowDefinitions="40,*" ColumnDefinitions="auto,*"
+              Padding="{OnPlatform iOS='30,60,30,30', Default='30'}">
+
+            <Label 
+                Text="MAUI Metrics Visualizer"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="1"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+
+            <StackLayout
+                Grid.Row="1"
+                Grid.Column="0">
+
+                <Label 
+                    Text="From: "
+                    FontSize="14"
+                    HorizontalOptions="Start" />
+                <DatePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Date="{Binding From, Mode=TwoWay}"/>
+                <TimePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Time="{Binding FromTime, Mode=TwoWay}"/>
+
+                <Label 
+                    Text="To: "
+                    FontSize="14"
+                    HorizontalOptions="Start" />
+                <DatePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Date="{Binding To, Mode=TwoWay}"/>
+                <TimePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Time="{Binding ToTime, Mode=TwoWay}"/>
+
+                <Button 
+                    Text="Get CPU metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked"
+                    HorizontalOptions="Center" />
+                <Button 
+                    Text="Get DotNet metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked_1"
+                    HorizontalOptions="Center" />
+                <Button 
+                    Text="Get Hdd metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked_2"
+                    HorizontalOptions="Center" />
+                <Button 
+                    Text="Get Network metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked_3"
+                    HorizontalOptions="Center" />
+                <Button 
+                    Text="Get RAM metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked_4"
+                    HorizontalOptions="Center" />
+                
+            </StackLayout>
+
+            <!--<Label 
+                Text="Welcome to .NET Multi-platform App UI"
+                Grid.Row="1"
+                SemanticProperties.HeadingLevel="Level1"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center" />-->
+
+            <!--<Label 
+                Text="Current count: 0"
+                Grid.Row="2"
+                FontSize="18"
+                FontAttributes="Bold"
+                x:Name="CounterLabel"
+                HorizontalOptions="Center" />-->
+
+            
+
+            <Image 
+                Grid.Column="1"
+                Grid.Row="1"
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                WidthRequest="200"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+        </Grid>
+    </ScrollView>
+</ContentPage>
