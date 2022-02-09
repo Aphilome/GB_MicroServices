@@ -1,5 +1,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              x:Class="MetricsMauiClient.MainPage"
              BackgroundColor="{DynamicResource SecondaryColor}"
              HeightRequest="500">
@@ -41,25 +42,28 @@
                     FontAttributes="Bold"
                     Grid.Column="0"
                     Grid.Row="1"
+                    Margin="2"
                     HeightRequest="50"
                     Clicked="Button_Clicked"
-                    HorizontalOptions="Center" />
+                    HorizontalOptions="Start"/>
                 <Button 
                     Text="Get DotNet metrics"
                     FontAttributes="Bold"
                     Grid.Column="0"
                     Grid.Row="1"
+                    Margin="2"
                     HeightRequest="50"
                     Clicked="Button_Clicked_1"
-                    HorizontalOptions="Center" />
+                    HorizontalOptions="Start" />
                 <Button 
                     Text="Get Hdd metrics"
                     FontAttributes="Bold"
                     Grid.Column="0"
                     Grid.Row="1"
                     HeightRequest="50"
+                    Margin="2"
                     Clicked="Button_Clicked_2"
-                    HorizontalOptions="Center" />
+                    HorizontalOptions="Start" />
                 <Button 
                     Text="Get Network metrics"
                     FontAttributes="Bold"
@@ -67,7 +71,8 @@
                     Grid.Row="1"
                     HeightRequest="50"
                     Clicked="Button_Clicked_3"
-                    HorizontalOptions="Center" />
+                    Margin="2"
+                    HorizontalOptions="Start" />
                 <Button 
                     Text="Get RAM metrics"
                     FontAttributes="Bold"
@@ -75,36 +80,37 @@
                     Grid.Row="1"
                     HeightRequest="50"
                     Clicked="Button_Clicked_4"
-                    HorizontalOptions="Center" />
-                
+                    Margin="2"
+                    HorizontalOptions="Start" />
             </StackLayout>
 
-            <!--<Label 
-                Text="Welcome to .NET Multi-platform App UI"
-                Grid.Row="1"
-                SemanticProperties.HeadingLevel="Level1"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />-->
-
-            <!--<Label 
-                Text="Current count: 0"
-                Grid.Row="2"
-                FontSize="18"
-                FontAttributes="Bold"
-                x:Name="CounterLabel"
-                HorizontalOptions="Center" />-->
-
-            
-
-            <Image 
+            <chart:SfCartesianChart
                 Grid.Column="1"
-                Grid.Row="1"
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                WidthRequest="200"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+                Grid.Row="1">
+
+                <chart:SfCartesianChart.PrimaryAxis>
+                    <chart:DateTimeAxis>
+                        <chart:DateTimeAxis.Title>
+                            <chart:ChartAxisTitle Text="Date" />
+                        </chart:DateTimeAxis.Title>
+                    </chart:DateTimeAxis>
+                </chart:SfCartesianChart.PrimaryAxis>
+                <chart:SfCartesianChart.SecondaryAxis>
+                    <chart:NumericalAxis>
+                        <chart:NumericalAxis.Title>
+                            <chart:ChartAxisTitle Text="Metric value" />
+                        </chart:NumericalAxis.Title>
+                    </chart:NumericalAxis>
+                </chart:SfCartesianChart.SecondaryAxis>
+
+                <chart:SfCartesianChart.Series>
+                    <chart:ColumnSeries ItemsSource="{Binding Data, Mode=OneWay}"
+                            XBindingPath="DateTime" 
+                            YBindingPath="Value">
+                    </chart:ColumnSeries>
+                </chart:SfCartesianChart.Series>
+            </chart:SfCartesianChart>
+
 
         </Grid>
     </ScrollView>

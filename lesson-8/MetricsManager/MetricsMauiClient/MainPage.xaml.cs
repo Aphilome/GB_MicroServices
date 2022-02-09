@@ -1,4 +1,7 @@
-﻿using MetricsMauiClient.Models;
+﻿using Metrics.Data.Dto;
+using Metrics.Data.Requests;
+using Metrics.Data.Responses;
+using MetricsMauiClient.Models;
 using System.Text.Json;
 
 namespace MetricsMauiClient
@@ -21,56 +24,71 @@ namespace MetricsMauiClient
             _httpClient = new HttpClient();
         }
 
-        private void SendRequest<T>(string url)
+        private T SendRequest<T>(BaseMetricsRequest request)
+            where T : class, new()
         {
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, url);
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, request.Url);
             try
             {
                 var response = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                var result = JsonSerializer.DeserializeAsync<T>(responseStream);
+                return JsonSerializer.DeserializeAsync<T>(responseStream).Result;
             }
             catch (Exception ex)
             {
                 // MessageBox.Show(ex.Message);
             }
-        }
-
-        private string GetUrl()
-        {
-
-            return "";
+            return null;
         }
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            _viewModel.MetricsType = MetricsEnum.Cpu;
-            SendRequest();
+            var resalt = SendRequest<CpuMetricsResponse>(new CpuMetricsRequest
+            {
+                FromTime = _viewModel.From,
+                ToTime = _viewModel.To,
+            });
+            _viewModel.Data = resalt.Metrics.OfType<AMetricDto<int>>().ToList();
         }
 
         private void Button_Clicked_1(object sender, EventArgs e)
         {
-            _viewModel.MetricsType = MetricsEnum.DotNet;
-            SendRequest();
+            var resalt = SendRequest<DotNetMetricsResponse>(new DotNetMetricsRequest
+            {
+                FromTime = _viewModel.From,
+                ToTime = _viewModel.To,
+            });
+            _viewModel.Data = resalt.Metrics.OfType<AMetricDto<int>>().ToList();
         }
 
         private void Button_Clicked_2(object sender, EventArgs e)
         {
-            _viewModel.MetricsType = MetricsEnum.Hdd;
-            SendRequest();
+            var resalt = SendRequest<HddMetricsResponse>(new HddMetricsRequest
+            {
+                FromTime = _viewModel.From,
+                ToTime = _viewModel.To,
+            });
+            _viewModel.Data = resalt.Metrics.OfType<AMetricDto<int>>().ToList();
         }
 
         private void Button_Clicked_3(object sender, EventArgs e)
         {
-            _viewModel.MetricsType = MetricsEnum.Network;
-            SendRequest();
+            var resalt = SendRequest<NetworkMetricsResponse>(new NetworkMetricsRequest
+            {
+                FromTime = _viewModel.From,
+                ToTime = _viewModel.To,
+            });
+            _viewModel.Data = resalt.Metrics.OfType<AMetricDto<int>>().ToList();
         }
 
         private void Button_Clicked_4(object sender, EventArgs e)
         {
-            _viewModel.MetricsType = MetricsEnum.Ram;
-            SendRequest();
+            var resalt = SendRequest<RamMetricsResponse>(new RamMetricsRequest
+            {
+                FromTime = _viewModel.From,
+                ToTime = _viewModel.To,
+            });
+            _viewModel.Data = resalt.Metrics.OfType<AMetricDto<int>>().ToList();
         }
-
     }
 }

@@ -49,6 +49,14 @@
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.30" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Syncfusion.Maui.Charts" Version="19.4.50-preview" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Metrics.Data\Metrics.Data.csproj" />
+	</ItemGroup>
+
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>

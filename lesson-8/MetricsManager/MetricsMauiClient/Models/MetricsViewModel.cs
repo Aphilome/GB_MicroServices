@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Metrics.Data.Dto;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MetricsMauiClient.Models
@@ -14,7 +15,7 @@ namespace MetricsMauiClient.Models
 
         public DateTime From
         {
-            get => _model.From; 
+            get => _model.From;
             set
             {
                 _model.From = value;
@@ -32,8 +33,8 @@ namespace MetricsMauiClient.Models
             }
         }
 
-        public DateTime To 
-        { 
+        public DateTime To
+        {
             get => _model.To;
             set
             {
@@ -52,7 +53,29 @@ namespace MetricsMauiClient.Models
             }
         }
 
-        public MetricsEnum MetricsType { get; set; }
+        private List<AMetricDto<int>> _data;
+        public List<AMetricDto<int>> Data
+        {
+            get => _data?.Take(100)?.ToList();
+            set
+            {
+                _data = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public class Tmp
+        {
+            public DateTime X { get; set; }
+            public int Y { get; set; }
+        }
+
+        public List<Tmp> Temp => new List<Tmp>
+            {
+                new Tmp() { X = DateTime.Now.AddDays(0), Y = 5},
+                new Tmp() { X = DateTime.Now.AddDays(1), Y = 10},
+                new Tmp() { X = DateTime.Now.AddDays(2), Y = 7},
+            };
 
         #region INotifyPropertyChanged
 

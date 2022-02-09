@@ -11,7 +11,5 @@ namespace MetricsMauiClient.Models
         public DateTime From { get; set; }
         
         public DateTime To { get; set; }
-
-        public MetricsEnum MetricsType { get; set; }
     }
 }
