@@ -1,0 +1,117 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             x:Class="MetricsMauiClient.MainPage"
+             BackgroundColor="{DynamicResource SecondaryColor}"
+             HeightRequest="500">
+
+    <ScrollView>
+        <Grid RowSpacing="25" RowDefinitions="40,*" ColumnDefinitions="auto,*"
+              Padding="{OnPlatform iOS='30,60,30,30', Default='30'}">
+
+            <Label 
+                Text="MAUI Metrics Visualizer"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="1"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+
+            <StackLayout
+                Grid.Row="1"
+                Grid.Column="0">
+
+                <Label 
+                    Text="From: "
+                    FontSize="14"
+                    HorizontalOptions="Start" />
+                <DatePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Date="{Binding From, Mode=TwoWay}"/>
+                <TimePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Time="{Binding FromTime, Mode=TwoWay}"/>
+
+                <Label 
+                    Text="To: "
+                    FontSize="14"
+                    HorizontalOptions="Start" />
+                <DatePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Date="{Binding To, Mode=TwoWay}"/>
+                <TimePicker BackgroundColor="{DynamicResource PrimaryColor}" TextColor="Black" Time="{Binding ToTime, Mode=TwoWay}"/>
+
+                <Button 
+                    Text="Get CPU metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Margin="2"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked"
+                    HorizontalOptions="Start"/>
+                <Button 
+                    Text="Get DotNet metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Margin="2"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked_1"
+                    HorizontalOptions="Start" />
+                <Button 
+                    Text="Get Hdd metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Margin="2"
+                    Clicked="Button_Clicked_2"
+                    HorizontalOptions="Start" />
+                <Button 
+                    Text="Get Network metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked_3"
+                    Margin="2"
+                    HorizontalOptions="Start" />
+                <Button 
+                    Text="Get RAM metrics"
+                    FontAttributes="Bold"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="50"
+                    Clicked="Button_Clicked_4"
+                    Margin="2"
+                    HorizontalOptions="Start" />
+            </StackLayout>
+
+            <chart:SfCartesianChart
+                Grid.Column="1"
+                Grid.Row="1">
+
+                <chart:SfCartesianChart.PrimaryAxis>
+                    <chart:DateTimeAxis>
+                        <chart:DateTimeAxis.Title>
+                            <chart:ChartAxisTitle Text="Date" />
+                        </chart:DateTimeAxis.Title>
+                    </chart:DateTimeAxis>
+                </chart:SfCartesianChart.PrimaryAxis>
+                <chart:SfCartesianChart.SecondaryAxis>
+                    <chart:NumericalAxis>
+                        <chart:NumericalAxis.Title>
+                            <chart:ChartAxisTitle Text="Metric value" />
+                        </chart:NumericalAxis.Title>
+                    </chart:NumericalAxis>
+                </chart:SfCartesianChart.SecondaryAxis>
+
+                <chart:SfCartesianChart.Series>
+                    <chart:ColumnSeries ItemsSource="{Binding Data, Mode=OneWay}"
+                            XBindingPath="DateTime" 
+                            YBindingPath="Value">
+                    </chart:ColumnSeries>
+                </chart:SfCartesianChart.Series>
+            </chart:SfCartesianChart>
+
+
+        </Grid>
+    </ScrollView>
+</ContentPage>
